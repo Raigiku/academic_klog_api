@@ -1,0 +1,13 @@
+[package]
+name = "seguridad_keylogger_api"
+version = "0.1.0"
+authors = ["Raigiku <raigiku@hotmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "3.3.2"
+serde = "1.0"
+uuid = { version = "0.8", features = [ "serde" ] }
+sqlx = { version = "0.4", features = [ "runtime-actix-rustls", "postgres", "uuid" ] }
