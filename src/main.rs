@@ -53,13 +53,19 @@ async fn main() -> Result<(), ApiError> {
         .connect(&pg_uri)
         .await?;
 
+    let port = if let Ok(port) = std::env::var("PORT") {
+        port
+    } else {
+        "8080".to_string()
+    };
+
     HttpServer::new(move || {
         App::new()
             .data(pool.clone())
             .service(get_programs)
             .service(get_windows)
     })
-    .bind("127.0.0.1:8080")?
+    .bind(format!("127.0.0.1:{}", port))?
     .run()
     .await?;
 
