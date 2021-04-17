@@ -1,49 +1,15 @@
 mod api_error;
+mod key_press_info;
+mod program;
+mod window;
 
-use actix_web::{get, http::StatusCode, web, App, HttpResponse, HttpServer};
+use actix_web::{App, HttpServer};
 use api_error::ApiError;
-use serde::Serialize;
-use sqlx::{
-    postgres::{PgPoolOptions, PgRow},
-    Pool, Postgres, Row,
-};
-use uuid::Uuid;
+use key_press_info::post_key_press_info;
+use sqlx::postgres::PgPoolOptions;
 
-#[derive(Serialize)]
-struct Program {
-    id: Uuid,
-    name: String,
-}
-
-#[get("/programs")]
-async fn get_programs(pool: web::Data<Pool<Postgres>>) -> Result<HttpResponse, ApiError> {
-    let programs = sqlx::query(r#"select * from program"#)
-        .map(|row: PgRow| Program {
-            id: row.get_unchecked(0),
-            name: row.get_unchecked(1),
-        })
-        .fetch_all(pool.as_ref())
-        .await?;
-    Ok(HttpResponse::build(StatusCode::OK).json(programs))
-}
-
-#[derive(Serialize)]
-struct Window {
-    id: Uuid,
-    title: String,
-}
-
-#[get("/windows")]
-async fn get_windows(pool: web::Data<Pool<Postgres>>) -> Result<HttpResponse, ApiError> {
-    let windows = sqlx::query(r#"select * from "window""#)
-        .map(|row: PgRow| Window {
-            id: row.get_unchecked(0),
-            title: row.get_unchecked(1),
-        })
-        .fetch_all(pool.as_ref())
-        .await?;
-    Ok(HttpResponse::build(StatusCode::OK).json(windows))
-}
+use program::get_programs;
+use window::get_windows;
 
 #[actix_web::main]
 async fn main() -> Result<(), ApiError> {
@@ -64,6 +30,7 @@ async fn main() -> Result<(), ApiError> {
             .data(pool.clone())
             .service(get_programs)
             .service(get_windows)
+            .service(post_key_press_info)
     })
     .bind(format!("0.0.0.0:{}", port))?
     .run()

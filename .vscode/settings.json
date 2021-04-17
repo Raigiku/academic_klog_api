@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": false,
+                    "requestCert": false,
+                    "cert": "D:\\Libraries\\Documents\\heroku-cert-empty.txt"
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "keylogger-heroku",
+            "connectString": "postgres://sergaqvhpjyjgh:3d21c1291ec5ba0a3d47498ccfe697284807630452dc3327562dfacd29dfc23c@ec2-54-211-176-156.compute-1.amazonaws.com:5432/d9dqq29cdqnpih"
+        }
+    ]
+}
