@@ -1,6 +1,6 @@
 use actix_web::{get, http::StatusCode, web, HttpResponse};
 use serde::Serialize;
-use sqlx::{Pool, Postgres, Row, postgres::PgRow};
+use sqlx::{postgres::PgRow, Pool, Postgres, Row};
 use uuid::Uuid;
 
 use crate::api_error::ApiError;
